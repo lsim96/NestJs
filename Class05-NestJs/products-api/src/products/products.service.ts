@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { Product, ProductFilters } from './interfaces/product.interface';
+import { ProductFilters } from './interfaces/product.interface';
 import { v4 as uuid } from 'uuid';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { ProductDto } from './dtos/product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -19,7 +20,7 @@ export class ProductsService {
   async getAllProducts(filters?: ProductFilters) {
     const productsJson = await readFile(this.PRODUCTS_PATH, 'utf-8');
 
-    let products = JSON.parse(productsJson) as Product[];
+    let products = JSON.parse(productsJson) as ProductDto[];
 
     if (filters?.title) {
       products = products.filter((product) =>
@@ -48,7 +49,7 @@ export class ProductsService {
     return products;
   }
 
-  async saveProducts(products: Product[]) {
+  async saveProducts(products: ProductDto[]) {
     await writeFile(
       this.PRODUCTS_PATH,
       JSON.stringify(products, null, 2),
@@ -69,7 +70,7 @@ export class ProductsService {
   async createProduct(productData: CreateProductDto) {
     const products = await this.getAllProducts();
 
-    const newProduct: Product = {
+    const newProduct: ProductDto = {
       ...productData,
       id: uuid(),
     };

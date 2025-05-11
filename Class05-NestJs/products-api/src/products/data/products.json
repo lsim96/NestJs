@@ -1,0 +1,16 @@
+[
+  {
+    "title": "Car",
+    "stock": 20,
+    "price": 80,
+    "tags": ["Car, Engineer, infrastructures"],
+    "details": {
+      "description": "A very fancy product from china",
+      "productionYear": 2023,
+      "madeIn": "Random chinese brand",
+      "brand": "BestOfChina",
+      "warrantyInYears": 2
+    },
+    "id": "01babc30-0bfa-4520-9457-c65862018796"
+  }
+]

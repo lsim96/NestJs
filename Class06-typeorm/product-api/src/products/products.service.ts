@@ -1,0 +1,43 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Product } from './entities/product.entity';
+import { Repository } from 'typeorm';
+import { CreateProductDto } from './dtos/create-product.dto';
+import { UpdateProdutDto } from './dtos/update-product.dto';
+
+@Injectable()
+export class ProductsService {
+  constructor(
+    @InjectRepository(Product) private productsRepo: Repository<Product>,
+  ) {}
+
+  async findAll() {
+    return this.productsRepo.find();
+  }
+
+  async findById(id: number) {
+    const foundProduct = await this.productsRepo.findOneBy({ id });
+
+    if (!foundProduct) throw new NotFoundException('product not found');
+
+    return foundProduct;
+  }
+
+  async create(createData: CreateProductDto) {
+    return this.productsRepo.save(createData);
+  }
+
+  async updateProduct(id: number, updateData: UpdateProdutDto) {
+    const foundProduct = await this.findById(id);
+
+    Object.assign(foundProduct, updateData);
+
+    await this.productsRepo.save(foundProduct);
+  }
+
+  async delete(id: number) {
+    const foundProduct = await this.findById(id);
+
+    await this.productsRepo.remove(foundProduct);
+  }
+}

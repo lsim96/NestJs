@@ -1,0 +1,15 @@
+import { Router } from "express";
+import { AuthController } from "../controllers/auth.controller";
+import { joiValidator } from "../middlewares/joi-validator.middlware";
+import { userSchema } from "../const/joi-schemas.const";
+
+export const authRouter = Router();
+
+authRouter.post(
+  "/register",
+  joiValidator(userSchema),
+  AuthController.registerUser
+);
+authRouter.post("/login", AuthController.loginUser);
+authRouter.post("/logout", AuthController.logoutUser);
+authRouter.post("/refresh-token", AuthController.refreshAccessToken);

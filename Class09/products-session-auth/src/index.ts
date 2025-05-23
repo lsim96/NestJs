@@ -1,0 +1,19 @@
+import express from "express";
+import { v4 as uuid } from "uuid";
+import { createSession } from "./const/session.const";
+import { globalRouter } from "./const/router.const";
+
+const app = express();
+
+app.use(express.json());
+app.use(createSession);
+
+app.use("/api", globalRouter); //<= router goes here
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the products api");
+});
+
+app.listen(3000, () => {
+  console.log("Server is up at port 3000");
+});

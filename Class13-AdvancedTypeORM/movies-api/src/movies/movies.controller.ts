@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -33,6 +34,16 @@ export class MoviesController {
   @Get('/genre/count')
   getMoviesCountByGenre() {
     return this.moviesService.getMovieCountByGenre();
+  }
+
+  @Get('/meta-data')
+  getMetaData() {
+    return this.moviesService.getMetaData();
+  }
+
+  @Get(':id/awards')
+  getMovieAwards(@Param('id', ParseIntPipe) id: number) {
+    return this.moviesService.getMovieAwards(id);
   }
 
   @Patch(':id')

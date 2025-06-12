@@ -32,6 +32,9 @@ export class MoviesService {
         castMembers: {
           actor: true,
         },
+        movieProductionCo: {
+          productionCompany: true,
+        },
       },
     });
 
@@ -58,6 +61,24 @@ export class MoviesService {
     return foundMovie;
   }
 
+  async getMetaData() {
+    const response = await this.movieRepo
+      .createQueryBuilder('movie')
+      .select('COUNT(movie.id)', 'movieCount')
+      .addSelect('MAX(movie.budget)', 'maxBudget')
+      .addSelect('MIN(movie.budget)', 'minBudget')
+      .addSelect('AVG(movie.budget)', 'avgBudget')
+      .getRawMany();
+
+    return response.map((r) => ({
+      ...r,
+      movieCount: Number(r.movieCount),
+      maxBudget: Number(r.maxBudget),
+      minBudget: Number(r.minBudget),
+      avgBudget: Number(r.avgBudget),
+    }));
+  }
+
   async getMovieCountByGenre() {
     const response = await this.movieRepo
       .createQueryBuilder('movie')
@@ -70,6 +91,17 @@ export class MoviesService {
       .getRawMany();
 
     return response.map((r) => ({ ...r, movieCount: Number(r.movieCount) }));
+  }
+
+  async getMovieAwards(id: number) {
+    return this.movieRepo.findOne({
+      where: { id },
+      relations: {
+        movieAwards: {
+          award: true,
+        },
+      },
+    });
   }
 
   update(id: number, updateMovieDto: UpdateMovieDto) {

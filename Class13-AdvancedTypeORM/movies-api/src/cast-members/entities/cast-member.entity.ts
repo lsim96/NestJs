@@ -6,6 +6,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  PrimaryColumn,
 } from 'typeorm';
 
 @Entity('cast_members')
@@ -24,6 +25,16 @@ export class CastMember {
     name: 'created_at',
   })
   createdAt: string;
+
+  @PrimaryColumn({
+    name: 'movie_id',
+  })
+  movieId: number;
+
+  @PrimaryColumn({
+    name: 'actor_id',
+  })
+  actorId: number;
 
   @ManyToOne(() => Movie, (movie) => movie.castMembers)
   @JoinColumn({

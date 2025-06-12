@@ -1,6 +1,8 @@
+import { MovieProductionCompany } from './../../movie_production_companies/entities/movie_production_company.entity';
 import { CastMember } from 'src/cast-members/entities/cast-member.entity';
 import { Director } from 'src/directors/entities/director.entity';
 import { Genre } from 'src/genres/entities/genre.entity';
+import { MovieAwards } from 'src/movie_awards/entities/movie_award.entity';
 import {
   Column,
   CreateDateColumn,
@@ -21,6 +23,11 @@ export class Movie {
 
   @Column()
   title: string;
+
+  @Column({
+    name: 'release_date',
+  })
+  releaseDate: string;
 
   @Column({
     name: 'duration_minutes',
@@ -55,4 +62,13 @@ export class Movie {
 
   @OneToMany(() => CastMember, (castMember) => castMember.movie)
   castMembers: CastMember[];
+
+  @OneToMany(() => MovieAwards, (movieAwards) => movieAwards.movie)
+  movieAwards: MovieAwards[];
+
+  @OneToMany(
+    () => MovieProductionCompany,
+    (MovieProductionCo) => MovieProductionCo.movie,
+  )
+  movieProductionCo: MovieProductionCompany[];
 }

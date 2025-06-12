@@ -1,3 +1,4 @@
+import { ActorAward } from 'src/actor_awards/entities/actor_award.entity';
 import { CastMember } from 'src/cast-members/entities/cast-member.entity';
 import {
   Column,
@@ -41,4 +42,7 @@ export class Actor {
 
   @OneToMany(() => CastMember, (castMember) => castMember.actor)
   castMembers: CastMember[];
+
+  @OneToMany(() => ActorAward, (actorAward) => actorAward.actor)
+  actorAward: ActorAward[];
 }
